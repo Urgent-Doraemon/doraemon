@@ -1,5 +1,6 @@
 import React from "react";
 import EClass from "../components/List";
+import Chatbot from "../components/Chatbot"
 import logoImg from "../images/cnuLogo.png";
 import "./Home.css";
 // import { Link } from "react-router-dom";
@@ -27,6 +28,7 @@ export default () => {
       >
         {className}
       </Link> */}
+      <Chatbot />
     </div>
   );
 };
