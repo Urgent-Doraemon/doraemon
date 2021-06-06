@@ -18,7 +18,7 @@ const Posts = ({ nweets }) => {
     var tmp = window.location.href.split("/");
     tmp = tmp[tmp.length - 1].split("?");
     var subject = decodeURI(tmp[1]);
-
+    console.log(subject);
     setSubject(subject);
   });
 
