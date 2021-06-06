@@ -18,6 +18,7 @@ import {
 import { HashRouter as Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import chatbotImg from "../images/doraemon.png";
+import chatbotImg2 from "../images/doraemon2.jpeg";
 import "./Chatbot.css";
 import { firebaseInstance } from "../fbase";
 
@@ -79,10 +80,7 @@ const Chatbot = () => {
           }
           {checkNew && <Button className='newButton' onClick={checkNewNotice} variant="outlined" color="primary">확인하셨다면 눌러주세요!</Button>}
           <div className="img">
-          <img
-            src={chatbotImg}
-            className="doraemon_img"
-          />
+          {(!checkNew && !NewNotice) ? <img src={chatbotImg2} className="doraemon_img" /> : <img src={chatbotImg} className="doraemon_img" />}
           </div>
         </div>
 
