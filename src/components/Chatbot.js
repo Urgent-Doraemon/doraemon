@@ -43,6 +43,11 @@ const Chatbot = () => {
       setNewNotice(false);
     }
 
+    const checkNewNotice = () => {
+      setcheckNew(false);  
+      setNewNotice(false);
+    }
+
     useEffect(async () => {
       // 여기서 DB 데이터 변화 확인하고
       // 변화가 있으면 setNewNotice(true), 아니면 그냥 냅두기
@@ -53,7 +58,7 @@ const Chatbot = () => {
     return (
       <>
         <div className="chatbot">
-          {NewNotice && <Button className='newButton' onClick={clickChatbot} variant="outlined" color="primary">새로운 공지가 있어요!</Button>}
+          {(!checkNew && NewNotice) && <Button className='newButton' onClick={clickChatbot} variant="outlined" color="primary">새로운 공지가 있어요!</Button>}
           {checkNew && 
           <div className={Chatbot.root}>
           <List component="nav" aria-label="main mailbox folders">
@@ -72,6 +77,7 @@ const Chatbot = () => {
           </List>
           </div>
           }
+          {checkNew && <Button className='newButton' onClick={checkNewNotice} variant="outlined" color="primary">확인하셨다면 눌러주세요!</Button>}
           <div className="img">
           <img
             src={chatbotImg}
