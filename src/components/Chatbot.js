@@ -57,24 +57,27 @@ const Chatbot = () => {
           {checkNew && 
           <div className={Chatbot.root}>
           <List component="nav" aria-label="main mailbox folders">
-            <ListItemLink target="_blank" href="#class?데이터과학">
+            <ListItemLink target="_blank" href="#class?데이터과학?post=GV58N4sXhKALe5kKrVLp">
               <ListItemIcon>
                 <DraftsIcon />
               </ListItemIcon>
-              <ListItemText primary="데이터과학 공지입니다 이번주 주말에 시험을 봅니다" />
+              <ListItemText primary="[데이터과학] 긴급 공지입니다 이번주 주말에 시험을 봅니다." />
             </ListItemLink>
             <ListItemLink target="_blank" href="#class?최신컴퓨터특강">
               <ListItemIcon>
                 <DraftsIcon />
               </ListItemIcon>
-              <ListItemText primary="최신컴퓨터특강" />
+              <ListItemText primary="[최신컴퓨터특강] 기말고사 취소입니다." />
             </ListItemLink>
           </List>
           </div>
           }
+          <div className="img">
           <img
             src={chatbotImg}
+            className="doraemon_img"
           />
+          </div>
         </div>
 
       </>
