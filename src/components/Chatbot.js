@@ -8,13 +8,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import InboxIcon from '@material-ui/icons/Inbox';
 import DraftsIcon from '@material-ui/icons/Drafts';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@material-ui/core";
 import { HashRouter as Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import chatbotImg from "../images/doraemon.png";

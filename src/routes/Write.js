@@ -25,6 +25,7 @@ export default ({ className }) => {
       text: nweet,
       createAt: Date.now(),
       times: 0,
+      check: false,
     });
     {alert("공지사항이 등록되었습니다.");}
     setTitle("");

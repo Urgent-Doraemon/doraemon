@@ -14,7 +14,7 @@ const Post = () => {
   const [postid, setPostid] = useState("");
   const [post, setPost] = useState(null);
   const [flag, setFlag] = useState(false);
-
+  
   useEffect(async () => {
     var tmp = window.location.href.split("/");
     tmp = tmp[tmp.length - 1].split("?");
@@ -28,11 +28,22 @@ const Post = () => {
       .then((doc) => {
         setPost(doc.data());
         setFlag(true);
-      });
+      })
+      .then(checkPost());
 
     setSubject(subject);
     setPostid(postid);
   }, []);
+
+const checkPost = async () => {
+  // 공지 확인: check -> true로 변경
+  if(post.check == false) {
+    await dbService.doc(`${subject}/${postid}`).update({
+      check: true,
+    });
+    console.log("update ok!");
+  }
+};
 
   return (
     <>
