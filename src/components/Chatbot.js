@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import chatbotImg from "../images/doraemon.png";
 import chatbotImg2 from "../images/doraemon2.jpeg";
 import "./Chatbot.css";
-import { firebaseInstance } from "../fbase";
+import { dbService,firebaseInstance } from "../fbase";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +28,11 @@ const ListItemLink = (props) => {
 }
 
 const Chatbot = () => {
-
+    const [subjectList, setSubjectList] = useState(['데이터과학', '인간과 컴퓨터 상호작용', '최신컴퓨터특강'])
     const [checkNew, setcheckNew] = useState(false);
     const [NewNotice, setNewNotice] = useState(true); // 기본은 false! 나는 테스트 해보려고 true로 한거야
-    
+    const [newNoticeData, setNewNoticeData] = useState();
+
     const clickChatbot = () => {
       setcheckNew(true);  
       setNewNotice(false);
@@ -42,32 +43,47 @@ const Chatbot = () => {
       setNewNotice(false);
     }
 
-    useEffect(async () => {
-      // 여기서 DB 데이터 변화 확인하고
-      // 변화가 있으면 setNewNotice(true), 아니면 그냥 냅두기
-      // 그리고 밑에 render에서 map으로 link랑 이름만 수정하면돼!
-      // 그 담 primary에 내용 넣으면돼!
+    // useEffect(async () => {
+    //   // 여기서 DB 데이터 변화 확인하고
+    //   // 변화가 있으면 setNewNotice(true), 아니면 그냥 냅두기
+    //   // 그리고 밑에 render에서 map으로 link랑 이름만 수정하면돼!
+    //   // 그 담 primary에 내용 넣으면돼!
+    // }, []);
+
+    useEffect(() => {
+      const newData = {};
+      subjectList.forEach((subject) => {
+        dbService.collection(subject).where("check", "==", false).get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              newData[doc.id] = doc.data();
+              newData[doc.id]['subject'] = subject;
+          });
+        })
+      });
+      // console.log(Object.keys(newData));
+      setNewNoticeData(newData);
     }, []);
+  
 
     return (
       <>
         <div className="chatbot">
+          {console.log(newNoticeData) /* DEBUG */}
           {(!checkNew && NewNotice) && <Button className='newButton' onClick={clickChatbot} variant="outlined" color="primary">새로운 공지가 있어요!</Button>}
           {checkNew && 
           <div className={Chatbot.root}>
           <List component="nav" aria-label="main mailbox folders">
-            <ListItemLink target="_blank" href="#class?데이터과학?post=GV58N4sXhKALe5kKrVLp">
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="[데이터과학] 긴급 공지입니다 이번주 주말에 시험을 봅니다." />
-            </ListItemLink>
-            <ListItemLink target="_blank" href="#class?최신컴퓨터특강">
-              <ListItemIcon>
-                <DraftsIcon />
-              </ListItemIcon>
-              <ListItemText primary="[최신컴퓨터특강] 기말고사 취소입니다." />
-            </ListItemLink>
+            { Object.entries(newNoticeData).map((data) => (
+              <ListItemLink target="_blank" href={`#class?${data[1].subject}?post=${data[0]}`}>
+                <ListItemIcon>
+                  <DraftsIcon />
+                </ListItemIcon>
+                { data[1].subject.length + data[1].title.length > 20  
+                  ? <ListItemText primary={`[${data[1].subject.concat('] ', data[1].title).slice(0,20)}..`} />
+                  : <ListItemText primary={`[${data[1].subject}] ${data[1].title}`} /> }
+              </ListItemLink>
+            )) }   
           </List>
           </div>
           }
