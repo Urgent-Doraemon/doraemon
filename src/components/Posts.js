@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/ko";
 import "./Posts.css";
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 
 const Posts = ({ nweets }) => {
   const [subject, setSubject] = useState("");
@@ -47,6 +48,7 @@ const Posts = ({ nweets }) => {
                 >
                   {nweet.title}
                 </Link>
+                { !nweet.check && <FiberNewIcon color="secondary" /> }
               </TableCell>
               <TableCell align="left">{nweet.user}</TableCell>
               <TableCell align="left">{change_date(nweet.createAt)}</TableCell>

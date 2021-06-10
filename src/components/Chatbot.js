@@ -14,6 +14,7 @@ import chatbotImg from "../images/doraemon.png";
 import chatbotImg2 from "../images/doraemon2.jpeg";
 import "./Chatbot.css";
 import { dbService,firebaseInstance } from "../fbase";
+import { AddAlertOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,9 +29,9 @@ const ListItemLink = (props) => {
 }
 
 const Chatbot = () => {
-    const [subjectList, setSubjectList] = useState(['데이터과학', '인간과 컴퓨터 상호작용', '최신컴퓨터특강'])
+    const subjectList = ['데이터과학', '인간과 컴퓨터 상호작용', '최신컴퓨터특강'];
     const [checkNew, setcheckNew] = useState(false);
-    const [NewNotice, setNewNotice] = useState(true); // 기본은 false! 나는 테스트 해보려고 true로 한거야
+    const [NewNotice, setNewNotice] = useState(false); // 기본은 false! 나는 테스트 해보려고 true로 한거야
     const [newNoticeData, setNewNoticeData] = useState();
 
     const clickChatbot = () => {
@@ -38,44 +39,41 @@ const Chatbot = () => {
       setNewNotice(false);
     }
 
+    const closeChatBot = () => {
+      setcheckNew(false);  
+      setNewNotice(true);
+    }
+
     const checkNewNotice = () => {
       setcheckNew(false);  
       setNewNotice(false);
     }
 
-    // useEffect(async () => {
-    //   // 여기서 DB 데이터 변화 확인하고
-    //   // 변화가 있으면 setNewNotice(true), 아니면 그냥 냅두기
-    //   // 그리고 밑에 render에서 map으로 link랑 이름만 수정하면돼!
-    //   // 그 담 primary에 내용 넣으면돼!
-    // }, []);
-
-    useEffect(() => {
-      const newData = {};
+    useEffect(async () => {
+      const newData = [];
       subjectList.forEach((subject) => {
         dbService.collection(subject).where("check", "==", false).get()
         .then((querySnapshot) => {
+          if(!NewNotice && !querySnapshot.empty) setNewNotice(true);
           querySnapshot.forEach((doc) => {
               newData[doc.id] = doc.data();
               newData[doc.id]['subject'] = subject;
           });
         })
       });
-      // console.log(Object.keys(newData));
       setNewNoticeData(newData);
     }, []);
   
-
     return (
       <>
         <div className="chatbot">
-          {console.log(newNoticeData) /* DEBUG */}
+          {/* console.log(newNoticeData) /* DEBUG */}
           {(!checkNew && NewNotice) && <Button className='newButton' onClick={clickChatbot} variant="outlined" color="primary">새로운 공지가 있어요!</Button>}
           {checkNew && 
           <div className={Chatbot.root}>
           <List component="nav" aria-label="main mailbox folders">
             { Object.entries(newNoticeData).map((data) => (
-              <ListItemLink target="_blank" href={`#class?${data[1].subject}?post=${data[0]}`}>
+              <ListItemLink href={`#class?${data[1].subject}?post=${data[0]}` /* _target 지움 */ }> 
                 <ListItemIcon>
                   <DraftsIcon />
                 </ListItemIcon>
@@ -87,7 +85,8 @@ const Chatbot = () => {
           </List>
           </div>
           }
-          {checkNew && <Button className='newButton' onClick={checkNewNotice} variant="outlined" color="primary">확인하셨다면 눌러주세요!</Button>}
+          {/*checkNew && <Button className='newButton' onClick={checkNewNotice} variant="outlined" color="primary">모두 확인했습니다!</Button>*/}
+          {checkNew && <Button className='newButton' onClick={closeChatBot} variant="outlined" color="primary">챗봇 닫기</Button>}
           <div className="img">
           {(!checkNew && !NewNotice) ? <img src={chatbotImg2} className="doraemon_img" /> : <img src={chatbotImg} className="doraemon_img" />}
           </div>

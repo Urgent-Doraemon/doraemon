@@ -10,6 +10,10 @@ import {
 import { HashRouter as Route } from "react-router-dom";
 import "./List.css";
 import Class from "../routes/Class";
+import FiberNewIcon from '@material-ui/icons/FiberNew';
+import { dbService } from "../fbase";
+import { useEffect, useState } from "react";
+import { LabelOffRounded } from "@material-ui/icons";
 
 function createData(id, year, division, group, name, onoff, professor, score) {
   return { id, year, division, group, name, onoff, professor, score };
@@ -49,8 +53,30 @@ const rows = [
 ];
 
 const EClass = () => {
-  return (
+  const subjectList = ['데이터과학', '인간과 컴퓨터 상호작용', '최신컴퓨터특강'];
+  const [hasUnchecked, setHasUnchecked] = useState([]); 
+  const [load, setLoad] = useState(false);
+
+  const loadfunc = () => {
+    const unchecked = [];
+    if (hasUnchecked.length > 0) return ;
+    subjectList.forEach(async (subject) => {
+      await dbService.collection(subject).where("check", "==", false).get()
+      .then((querySnapshot) => {
+        if(!querySnapshot.empty) unchecked.push(subject); 
+      });
+    });
+    setHasUnchecked(unchecked);
+    setLoad(true);
+  }
+
+  useEffect( async () => {
+    loadfunc();
+  }, []) ;
+
+  return load ? (
     <div className="classList">
+      {console.log(hasUnchecked)}
       <p className="tableName">
         <span style={{ color: "orange" }}>■ </span>
         강의목록
@@ -73,12 +99,12 @@ const EClass = () => {
             <TableRow key={row.id}>
               <TableCell align="left">{row.division}</TableCell>
               <TableCell align="left">{row.group}</TableCell>
-              <TableCell align="left">{row.name}</TableCell>
+              <TableCell align="left">{row.name} 
+                { hasUnchecked.includes(row.name) && <FiberNewIcon color="secondary" /> } </TableCell>
               <TableCell align="left">{row.year}</TableCell>
               <TableCell align="left">{row.onoff}</TableCell>
               <TableCell align="left">{row.professor}</TableCell>
               <TableCell align="left">{row.score}</TableCell>
-
               <TableCell align="left">
                 <Link
                   to={{
@@ -93,7 +119,8 @@ const EClass = () => {
         </TableBody>
       </Table>
     </div>
-  );
+  )
+  : loadfunc();
 };
 
 export default EClass;
