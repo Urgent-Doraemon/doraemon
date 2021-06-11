@@ -11,7 +11,7 @@ import DraftsIcon from '@material-ui/icons/Drafts';
 import { HashRouter as Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import chatbotImg from "../images/doraemon.png";
-import chatbotImg2 from "../images/doraemon2.jpeg";
+import chatbotImg2 from "../images/doraemon2.png";
 import "./Chatbot.css";
 import { dbService,firebaseInstance } from "../fbase";
 import { AddAlertOutlined } from "@material-ui/icons";
