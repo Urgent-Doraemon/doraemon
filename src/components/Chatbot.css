@@ -1,21 +1,71 @@
-.chatbot{
-    position:absolute;
-    bottom:30px;
-    right: 15px;
-    /* width:170px;
-    height:170px;    */
-    background: white;
+.chatbot {
+  position: absolute;
+  bottom: 30px;
+  right: 15px;
+  text-align: center;
+}
+
+.chatbot #chatList {
+  background: #f3f5fc;
+  border-radius: 1em;
+  padding: 20px;
+  padding-top: 10px;
+  box-shadow: 0 0 20px 1px rgba(222, 222, 222, 30);
+  margin-bottom: 6px;
+  margin-right: 14px;
+  vertical-align: middle;
+}
+
+.chatbot .listHeader p {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 40px;
+}
+
+.chatbot .navList {
+  background: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  box-shadow: 0 0 20px 1px rgba(235, 235, 235, 30);
+}
+
+.chatbot .newButton {
+  background: white;
+  border: 1px solid rgb(222, 222, 222);
+  display: inline-block;
+  margin-top: 14px;
+}
+
+.chatbot .openBtn {
+  position: absolute;
+  right: 130px;
+  bottom: 40px;
+  width: 200px;
+  height: 50px;
+  background: white;
+  box-shadow: 0 0 20px 1px rgba(235, 235, 235, 30);
 }
 
 .new {
-    background-color:orange;
-    /* padding: 0px; */
+  background-color: orange;
 }
 
 .chatbot > .img {
-    /* width:170px;
-    height:170px;  
-    margin-top : 10px; */
-    width: 100px;
-    height: 100px;
+  width: 80px;
+  height: 80px;
+  border: 1px solid rgb(222, 222, 222);
+  padding: 8px 5px 5px 8px;
+  border-radius: 90%;
+  margin-top: 10px;
+  box-shadow: 0 0 20px 1px rgba(235, 235, 235, 30);
+  position: absolute;
+  right: 25px;
+  bottom: 20px;
+}
+
+.nil {
+  width: 70px;
+  height: 70px;
 }
