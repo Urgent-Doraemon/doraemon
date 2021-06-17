@@ -9,7 +9,6 @@ export default () => {
   const [nweets, setNweets] = useState([]);
   const [subject, setSubject] = useState("");
   const [isPost, setIsPost] = useState(false);
-  // const [post, setPost] = useState("");
 
   useEffect(() => {
     var tmp = window.location.href.split("/");
@@ -17,7 +16,6 @@ export default () => {
     var subject = decodeURI(tmp[1]);
     if (tmp.length > 2) {
       setIsPost(true);
-      // setPost(tmp[2].split("=")[1]);
     }
 
     dbService.collection(subject).onSnapshot((snapshot) => {

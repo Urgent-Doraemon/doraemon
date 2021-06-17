@@ -126,7 +126,7 @@ const Chatbot = () => {
             </Button>
           </div>
         )}
-        {/*checkNew && <Button className='newButton' onClick={checkNewNotice} variant="outlined" color="primary">모두 확인했습니다!</Button>*/}
+      
         {!checkNew && (
           <div className="img">
             {!NewNotice ? (

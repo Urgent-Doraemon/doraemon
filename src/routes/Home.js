@@ -3,10 +3,8 @@ import EClass from "../components/List";
 import Chatbot from "../components/Chatbot"
 import logoImg from "../images/cnuLogo.png";
 import "./Home.css";
-// import { Link } from "react-router-dom";
 
 export default () => {
-  // const className = "데이터과학";
   return (
     <div>
       <div className="header">
@@ -20,16 +18,7 @@ export default () => {
       </div>
 
       <EClass />
-      {/* <Link
-        to={{
-          pathname: `/class`,
-          state: {
-            className,
-          },
-        }}
-      >
-        {className}
-      </Link> */}
+
       <Chatbot />
     </div>
   );
