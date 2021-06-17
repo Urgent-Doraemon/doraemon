@@ -13,7 +13,6 @@ import Class from "../routes/Class";
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 import { dbService } from "../fbase";
 import { useEffect, useState } from "react";
-import { LabelOffRounded } from "@material-ui/icons";
 
 function createData(id, year, division, group, name, onoff, professor, score) {
   return { id, year, division, group, name, onoff, professor, score };
@@ -55,28 +54,29 @@ const rows = [
 const EClass = () => {
   const subjectList = ['데이터과학', '인간과 컴퓨터 상호작용', '최신컴퓨터특강'];
   const [hasUnchecked, setHasUnchecked] = useState([]); 
+  const [uncheckDS, setUncheckDS] = useState(false);
+  const [uncheckHCI, setUncheckHCI] = useState(false);
+  const [uncheckCL, setUncheckCL] = useState(false);
   const [load, setLoad] = useState(false);
+  
+  useEffect(() => {
+    if (load) return ;
 
-  const loadfunc = () => {
-    const unchecked = [];
-    if (hasUnchecked.length > 0) return ;
     subjectList.forEach(async (subject) => {
-      await dbService.collection(subject).where("check", "==", false).get()
-      .then((querySnapshot) => {
-        if(!querySnapshot.empty) unchecked.push(subject); 
+      setLoad(true);
+      dbService.collection(subject).where("check", "==", false).onSnapshot((snapshot) => {
+        if(snapshot.docs.length > 0) {
+          if(subject=="데이터과학") setUncheckDS(true);
+          else if(subject=="인간과 컴퓨터 상호작용") setUncheckHCI(true);
+          else if(subject=="최신컴퓨터특강") setUncheckCL(true);
+        }
       });
-    });
-    setHasUnchecked(unchecked);
-    setLoad(true);
-  }
+    })
+  }, []);
 
-  useEffect( async () => {
-    loadfunc();
-  }, []) ;
-
-  return load ? (
+  return (
     <div className="classList">
-      {console.log(hasUnchecked)}
+      {console.log(uncheckDS+"/"+uncheckHCI+"/"+uncheckCL)}
       <p className="tableName">
         <span style={{ color: "orange" }}>■ </span>
         강의목록
@@ -100,7 +100,8 @@ const EClass = () => {
               <TableCell align="left">{row.division}</TableCell>
               <TableCell align="left">{row.group}</TableCell>
               <TableCell align="left">{row.name} 
-                { hasUnchecked.includes(row.name) && <FiberNewIcon color="secondary" /> } </TableCell>
+                { ((row.name=="데이터과학" && uncheckDS) || (row.name=="인간과 컴퓨터 상호작용" && uncheckHCI) || (row.name=="최신컴퓨터특강" && uncheckCL))
+                && <FiberNewIcon color="secondary" /> } </TableCell>
               <TableCell align="left">{row.year}</TableCell>
               <TableCell align="left">{row.onoff}</TableCell>
               <TableCell align="left">{row.professor}</TableCell>
@@ -120,7 +121,6 @@ const EClass = () => {
       </Table>
     </div>
   )
-  : loadfunc();
 };
 
 export default EClass;
